@@ -1,8 +1,11 @@
 [tool.poetry]
-name = "pypackage-template"
+name = "pypackage-template-fork"
 version = "0.1.0"
 description = "A template for generating a Python package"
-authors = ["Bruno Alla <alla.brunoo@gmail.com>"]
+authors = [
+    "Bruno Alla <alla.brunoo@gmail.com>",
+    "34j <34j.95a2p@simplelogin.com>",
+]
 license = "MIT"
 
 [tool.poetry.dependencies]
