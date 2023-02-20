@@ -11,7 +11,7 @@ Project template for a Python Package using Copier.
 - Project for Python 3.7+.
 - Testing with Pytest using Github actions.
 - Packaging powered by [poetry]
-- Follows the [black] style guide with [flake8] and [isort].
+- Follows the [black] style guide with [flake8] and [isort], [autoflake].
 - Comes with [pre-commit] hook config for black, isort, flake8 and [pyupgrade](https://github.com/asottile/pyupgrade).
 - Style guide enforced on CI.
 - Dependencies kept up to date by [Renovate].
@@ -140,6 +140,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [black]: https://github.com/psf/black
 [flake8]: https://pypi.org/project/flake8/
 [isort]: https://pypi.org/project/isort/
+[autoflake]: https://pypi.org/project/autoflake/
 [pre-commit]: https://pre-commit.com/
 [renovate]: https://docs.renovatebot.com/
 [renovate-gh-app]: https://github.com/apps/renovate
