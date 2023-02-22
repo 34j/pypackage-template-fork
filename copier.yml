@@ -62,6 +62,7 @@ run_poetry_install:
   type: bool
   help: "Run poetry install after {{ package_name }} generation?"
   default: yes
+  when: "{{ setup_venv }}"
 
 initial_commit:
   type: bool
@@ -77,6 +78,7 @@ setup_pre_commit:
   type: bool
   help: "Setup pre-commit hooks (requires pre-commit)?"
   default: yes
+  when: "{{ setup_venv }}"
 
 add_me_as_contributor:
   type: bool
