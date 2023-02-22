@@ -17,14 +17,17 @@ def base_answers():
         "github_username": "jdeau",
         "project_name": "Snake Farm",
         "project_short_description": "A sample Snake farming project.",
-        "version": "0.0.1",
+        # "version": "0.0.1",
         "open_source_license": "MIT",
+        # "copyright_year": 2023,
         "documentation": True,
-        "run_poetry_install": False,
-        "initial_commit": False,
+        "setup_venv": True,
+        "run_poetry_install": True,
+        "initial_commit": True,
         "setup_github": False,
-        "setup_pre_commit": False,
-        "add_me_as_contributor": False,
+        "setup_pre_commit": True,
+        "add_me_as_contributor": True,
+        "open_with_vscode": False,
     }
 
 
@@ -34,7 +37,7 @@ def _check_file_contents(
     unexpect_strs: Sequence[str] = (),
 ):
     assert file_path.exists()
-    file_content = file_path.read_text()
+    file_content = file_path.read_text("utf-8")
     for content in expected_strs:
         assert content in file_content
     for content in unexpect_strs:

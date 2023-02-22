@@ -21,6 +21,28 @@ Project template for a Python Package using Copier.
 - Documentation configured with Sphinx and [MyST Parser][myst].
 - Standardised list of GitHub labels synchronised on push to master using [the labels CLI][pylabels].
 
+## Quickstart
+
+- [npm]
+- [python]
+- [copier]
+
+```shell
+copier "gh:34j/pypackage-template-fork" <path>
+```
+
+Branches/`main`/Branch protection rules
+
+[x] Allow force pushes
+
+Actions/General/Workflow permissions
+
+[x] Read and write permissions
+
+Secrets and variables/Actions/Repository secrets
+
+go to [codecov.io][codecov] and copy CODECOV_TOKEN and add it
+
 ## Usage
 
 Generate a new project with:
