@@ -31,7 +31,7 @@ package_name:
 project_short_description:
   type: str
   help: "A short description of the project"
-  placeholder: "A super helpful small Python package."
+  default: "Python package for "
 
 open_source_license:
   type: str
