@@ -101,7 +101,7 @@ _tasks:
   # Setup venv
   - "{% if setup_venv %}py -m venv venv{% endif %}"
   # Run poetry install
-  - "{% if run_poetry_install and \"Windows\" in ''|env('OS') %}\"venv/scripts/activate\"{% else %}source venv/bin/activate{% endif %}\npip install poetry\npoetry install"
+  - "{% if run_poetry_install and \"Windows\" in ''|env('OS') %}\"venv/scripts/activate\"{% else %}source venv/bin/activate{% endif %}\npip install poetry\npoetry install --with dev"
   # Initial commit
   - "{% if initial_commit %}git init{% endif %}"
   - "{% if initial_commit %}git add .{% endif %}"
