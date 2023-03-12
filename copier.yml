@@ -58,6 +58,12 @@ setup_venv:
   help: "Setup a virtual environment?"
   default: yes
 
+venv_version:
+  type: str
+  help: "Python version for the virtual environment"
+  default: "3.10"
+  when: "{{ setup_venv }}"
+
 run_poetry_install:
   type: bool
   help: "Run poetry install after {{ package_name }} generation?"
@@ -99,7 +105,7 @@ _tasks:
   # Cleanup docs
   - "{% if not documentation %}rm -rf docs .readthedocs.yml{% endif %}"
   # Setup venv
-  - "{% if setup_venv %}py -m venv venv{% endif %}"
+  - "{% if setup_venv %}py -{{ venv_version }} -m venv venv{% endif %}"
   # Run poetry install
   - "{% if run_poetry_install and \"Windows\" in ''|env('OS') %}\"venv/scripts/activate\"{% else %}source venv/bin/activate{% endif %}\npip install poetry\npoetry install --with dev"
   # Initial commit
