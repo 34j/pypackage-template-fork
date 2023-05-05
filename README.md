@@ -33,11 +33,11 @@ copier "gh:34j/pypackage-template-fork" <path>
 
 Branches/`main`/Branch protection rules
 
-[x] Allow force pushes
+- [x] Allow force pushes
 
 Actions/General/Workflow permissions
 
-[x] Read and write permissions
+- [x] Read and write permissions
 
 Secrets and variables/Actions/Repository secrets
 
