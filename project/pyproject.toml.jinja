@@ -68,6 +68,10 @@ exclude_lines = [
 profile = "black"
 known_first_party = ["{{ package_name }}", "tests"]
 
+[tool.autoflake]
+expand_star_imports = true
+remove_all_unused_imports = true
+
 [tool.mypy]
 check_untyped_defs = true
 disallow_any_generics = true
