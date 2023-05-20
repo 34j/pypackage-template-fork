@@ -23,9 +23,9 @@ Project template for a Python Package using Copier.
 
 ## Quickstart
 
-- [npm]
-- [python]
-- [copier]
+- [npm][npm]
+- [python][python]
+- [copier][copier]
 
 ```shell
 copier "gh:34j/pypackage-template-fork" <path>
@@ -42,6 +42,10 @@ Actions/General/Workflow permissions
 Secrets and variables/Actions/Repository secrets
 
 go to [codecov.io][codecov] and copy CODECOV_TOKEN and add it
+
+go to [Read the Docs][rtd-dashboard] and add the project
+
+set up [pre-commit-ci][pre-commit-ci]
 
 ## Usage
 
@@ -177,3 +181,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [create-pat]: https://github.com/settings/tokens/new?scopes=repo
 [rtd-dashboard]: https://readthedocs.org/dashboard/
 [all-contribs-install]: https://allcontributors.org/docs/en/bot/installation
+[pre-commit-ci]: https://pre-commit.ci/
