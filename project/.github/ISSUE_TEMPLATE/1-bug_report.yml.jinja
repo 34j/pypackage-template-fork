@@ -49,6 +49,9 @@ body:
     options:
       - label: I agree to follow this project's Code of Conduct.
         required: true
+- type: checkboxes
+  id: no-duplicate
+  attributes:
   - label: No Duplicate
     description: Please check [existing issues](https://github.com/{{ github_username }}/{{ project_slug }}/issues) to avoid duplicates.
     options:
