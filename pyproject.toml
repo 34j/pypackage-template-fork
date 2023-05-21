@@ -19,6 +19,7 @@ copier = "^7.0"
 pytest = "^7.0"
 pytest-mock = "^3.3"
 pre-commit = "^3.1.1"
+poetry = "^1.5.0"
 
 [tool.isort]
 profile = "black"
