@@ -12,7 +12,7 @@ email:
 github_username:
   type: str
   help: "GitHub Username"
-  default: "{{ {{ full_name }} | env('GITHUB_USER') }}"
+  default: "{{ full_name | env('GITHUB_USER') }}"
 
 project_name:
   type: str
