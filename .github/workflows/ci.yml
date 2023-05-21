@@ -30,9 +30,10 @@ jobs:
     name: "Template: ${{ matrix.python-version }} - ${{ matrix.os }}"
     steps:
       - uses: actions/checkout@v3
-      - uses: oleksiyrudenko/gha-git-credentials@v2.1.1
-        with:
-          global: true
+      - name: Setup git user and email
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Install poetry
         run: pipx install poetry
       - name: Set up Python
@@ -69,9 +70,10 @@ jobs:
     name: "Generated: ${{ matrix.script.name }}"
     steps:
       - uses: actions/checkout@v3
-      - uses: oleksiyrudenko/gha-git-credentials@v2.1.1
-        with:
-          global: true
+      - name: Setup git user and email
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Install poetry
         run: pipx install poetry
       - uses: actions/setup-python@v4
