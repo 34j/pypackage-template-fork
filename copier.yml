@@ -130,6 +130,8 @@ _tasks:
     && gh secret set GH_PAT -b "{{ "none"|env("GITHUB_TOKEN") }}"{% endif %}'
   # Open with vscode
   - "{% if open_with_vscode %}code .{% endif %}"
+  # Replace true with false in .copier-answers.yml except "documentation: true" for faster copier update
+  - "sed -i '/documentation: true/!s/true/false/g' .copier-answers.yml"
 _jinja_extensions:
   - jinja2_time.TimeExtension
   - jinja2_shell.ShellExtension
