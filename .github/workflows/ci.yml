@@ -90,12 +90,14 @@ jobs:
       - run: poetry install
       - run: |
           poetry run copier . my-project \
-          --data 'full_name=Bruno Alla' \
+          --data 'full_name=Github Actions' \
           --data 'email=test@example.com' \
-          --data 'github_username=dummy' \
+          --data 'github_username=github-actions[bot]' \
           --data 'project_name=My Amazing Project' \
           --data 'project_short_description=Just a great project' \
           --data 'open_source_license=MIT' \
+          --data 'open_with_vscode=false' \
+          --data 'setup_github=false' \
           --defaults
         shell: bash
       - run: cat pyproject.toml
