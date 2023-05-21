@@ -34,6 +34,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Install all-contributors-cli
+        run: npm install -g all-contributors-cli
       - name: Install poetry
         run: pipx install poetry
       - name: Set up Python
@@ -74,6 +76,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Install all-contributors-cli
+        run: npm install -g all-contributors-cli
       - name: Install poetry
         run: pipx install poetry
       - uses: actions/setup-python@v4
