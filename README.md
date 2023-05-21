@@ -23,10 +23,6 @@ Project template for a Python Package using Copier.
 
 ## Quickstart
 
-- [npm][npm]
-- [python][python]
-- [copier][copier]
-
 ```shell
 copier "gh:34j/pypackage-template-fork" <path>
 ```
@@ -41,18 +37,26 @@ Actions/General/Workflow permissions
 
 Secrets and variables/Actions/Repository secrets
 
+go to [Applications][gh-applications] and set up Renovate
+
 go to [codecov.io][codecov] and copy CODECOV_TOKEN and add it
 
 go to [Read the Docs][rtd-dashboard] and add the project
 
 set up [pre-commit-ci][pre-commit-ci]
 
+### Update
+
+```shell
+copier update
+```
+
 ## Usage
 
 Generate a new project with:
 
 ```shell
-copier "gh:34j/pypackage-template-fork" path-to-project
+copier "gh:34j/pypackage-template-fork" <name>
 ```
 
 This will prompt you for a few questions and create new directory with the name you used as project slug.
@@ -182,3 +186,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [rtd-dashboard]: https://readthedocs.org/dashboard/
 [all-contribs-install]: https://allcontributors.org/docs/en/bot/installation
 [pre-commit-ci]: https://pre-commit.ci/
+[gh-applications]: https://github.com/settings/installations
