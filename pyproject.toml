@@ -10,6 +10,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
+arrow = "^1.2.3"
 jinja2-time = "^0.2.0"
 jinja2-env = "^0.1.1"
 jinja2-shell = "^0.1.2"
