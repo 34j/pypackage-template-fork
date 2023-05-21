@@ -79,6 +79,7 @@ setup_github:
   type: bool
   help: "Setup GitHub repository (requires gh CLI)?"
   default: yes
+  when: "{{ initial_commit }}"
 
 setup_pre_commit:
   type: bool
@@ -90,6 +91,7 @@ add_me_as_contributor:
   type: bool
   help: "Add me as a contributor?"
   default: yes
+  when: "{{ initial_commit }}"
 
 open_with_vscode:
   type: bool
@@ -100,6 +102,7 @@ open_with_vscode:
 _min_copier_version: "7.0.0"
 _subdirectory: "project"
 _tasks:
+  # In Windows, command prompt
   # Remove license file if no license
   - "{% if open_source_license == 'Not open source' %}rm LICENSE{% endif %}"
   # Cleanup docs
@@ -109,8 +112,13 @@ _tasks:
   # Run poetry install
   - "{% if 'Windows' in ''|env('OS') %}{% set venv_folder = 'venv\\\\scripts\\\\' %}{% else %}{% set venv_folder = 'venv\\\\bin\\\\' %}{% endif %}
     {% if run_poetry_install %}{{ venv_folder }}python -m pip install -U pip setuptools wheel && {{ venv_folder }}pip install -U poetry pre-commit && {{ venv_folder }}python -m poetry install --with dev{% endif %}"
+  # git init
+  - "git init && git add ."
+  # Setup pre-commit
+  - "{% if 'Windows' in ''|env('OS') %}{% set venv_folder = 'venv\\\\scripts\\\\' %}{% else %}{% set venv_folder = 'venv\\\\bin\\\\' %}{% endif %}
+    {% if setup_pre_commit %}{{ venv_folder }}pre-commit install && {{ venv_folder }}pre-commit run -a || git add .{% endif %}"
   # Initial commit
-  - '{% if initial_commit %}git init && git add . && git commit -m "chore: initial commit"{% endif %}'
+  - '{% if initial_commit %}git commit -m "chore: initial commit"{% endif %}'
   # Add me as a contributor
   - "{% if add_me_as_contributor %}npx all-contributors-cli add {{ github_username }} code,ideas,doc{% endif %}"
   # Setup GitHub
@@ -120,9 +128,6 @@ _tasks:
     --enable-merge-commit=false --enable-squash-merge --enable-rebase-merge=false
     && gh secret set PYPI_TOKEN -b "{{ "none"|env("PYPI_TOKEN") }}"
     && gh secret set GH_PAT -b "{{ "none"|env("GITHUB_TOKEN") }}"{% endif %}'
-  # Setup pre-commit
-  - "{% if 'Windows' in ''|env('OS') %}{% set venv_folder = 'venv\\\\scripts\\\\' %}{% else %}{% set venv_folder = 'venv\\\\bin\\\\' %}{% endif %}
-    {% if setup_pre_commit %}{{ venv_folder }}pre-commit install && {{ venv_folder }}pre-commit run -a{% endif %}"
   # Open with vscode
   - "{% if open_with_vscode %}code .{% endif %}"
 _jinja_extensions:
