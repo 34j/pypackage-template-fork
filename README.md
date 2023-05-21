@@ -48,7 +48,7 @@ set up [pre-commit-ci][pre-commit-ci]
 ### Update
 
 ```shell
-copier update
+copier --force update
 ```
 
 ## Usage
