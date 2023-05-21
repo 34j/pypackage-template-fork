@@ -2,6 +2,7 @@
 full_name:
   type: str
   help: "What's your name?"
+  default: "{{ '' | env ('NAME')}}"
 
 email:
   type: str
@@ -11,12 +12,12 @@ email:
 github_username:
   type: str
   help: "GitHub Username"
-  default: "{{ full_name }}"
+  default: "{{ {{ full_name }} | env('GITHUB_USER') }}"
 
 project_name:
   type: str
   help: "Project Name (human readable version)"
-  placeholder: "Python Package"
+  placeholder: "Python"
 
 project_slug:
   type: str
