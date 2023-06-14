@@ -1,4 +1,14 @@
 # questions
+project_name:
+  type: str
+  help: "Project Name (human readable version)"
+  placeholder: "Python"
+
+project_short_description:
+  type: str
+  help: "A short description of the project"
+  default: "Python package for "
+
 full_name:
   type: str
   help: "What's your name?"
@@ -14,11 +24,6 @@ github_username:
   help: "GitHub Username"
   default: "{{ full_name | env('GITHUB_USER') }}"
 
-project_name:
-  type: str
-  help: "Project Name (human readable version)"
-  placeholder: "Python"
-
 project_slug:
   type: str
   help: "Project slug (used for GitHub, PyPI, etc.)"
@@ -28,11 +33,6 @@ package_name:
   type: str
   help: "The name of the main Python package (should be a valid Python identifier)"
   default: "{{ project_slug.replace('-', '_') }}"
-
-project_short_description:
-  type: str
-  help: "A short description of the project"
-  default: "Python package for "
 
 open_source_license:
   type: str
