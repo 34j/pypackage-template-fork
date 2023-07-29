@@ -56,10 +56,13 @@ copier --force update
 Generate a new project with:
 
 ```shell
-copier "gh:34j/pypackage-template-fork" <name>
+copier copy --trust "gh:34j/pypackage-template-fork" <name>
 ```
 
 This will prompt you for a few questions and create new directory with the name you used as project slug.
+
+> _Note:_
+> the `--trust` option is required because this template may execute some tasks after generating the project, like initialising the git repo, installing dependencies and so forth. These are all listed in the `copier.yml` of this repo, under the `_tasks` key. They are all optional and safe to run. You can take my word for it, or better, check the code yourself!
 
 ### Start developing
 
