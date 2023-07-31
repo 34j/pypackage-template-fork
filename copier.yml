@@ -2,7 +2,7 @@
 project_name:
   type: str
   help: "Project Name (human readable version)"
-  placeholder: '{{ "exec(''import sys'') or sys.argv[-1]" | eval | capitalize }}'
+  default: '{{ "exec(''import sys'') or sys.argv[-1]" | eval | capitalize }}'
 
 project_short_description:
   type: str
@@ -128,7 +128,8 @@ _tasks:
     && gh repo edit --delete-branch-on-merge --enable-projects=false --enable-wiki=false
     --enable-merge-commit=false --enable-squash-merge --enable-rebase-merge=false
     && gh secret set PYPI_TOKEN -b "{{ "none"|env("PYPI_TOKEN") }}"
-    && gh secret set GH_PAT -b "{{ "none"|env("GITHUB_TOKEN") }}"{% endif %}'
+    && gh secret set GH_PAT -b "{{ "none"|env("GITHUB_TOKEN") }}"
+    && sh setup-github.sh {{ github_username }} {{ project_slug }}{% endif %}'
   # Open with vscode
   - "{% if open_with_vscode %}code .{% endif %}"
   # Replace true with false in .copier-answers.yml except "documentation: true" for faster copier update
