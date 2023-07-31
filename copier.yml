@@ -2,7 +2,7 @@
 project_name:
   type: str
   help: "Project Name (human readable version)"
-  placeholder: "Python"
+  placeholder: '{{ "exec(''import sys'') or sys.argv[-1]" | eval | capitalize }}'
 
 project_short_description:
   type: str
@@ -135,5 +135,6 @@ _tasks:
   - "sed -i '/documentation: true/!s/true/false/g' .copier-answers.yml"
 _jinja_extensions:
   - jinja2_time.TimeExtension
+  - jinja2_eval.EvalExtension
   - jinja2_shell.ShellExtension
   - jinja2_env.EnvExtension
