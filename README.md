@@ -24,7 +24,7 @@ Project template for a Python Package using Copier.
 ## Quickstart
 
 ```shell
-copier "gh:34j/pypackage-template-fork" <path>
+copier copy --trust "gh:34j/pypackage-template-fork" <path>
 ```
 
 Branches/`main`/Branch protection rules
