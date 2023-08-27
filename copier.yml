@@ -91,7 +91,7 @@ setup_pre_commit:
 add_me_as_contributor:
   type: bool
   help: "Add me as a contributor?"
-  default: yes
+  default: no
   when: "{{ initial_commit }}"
 
 open_with_vscode:
