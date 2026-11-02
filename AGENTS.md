@@ -41,7 +41,6 @@ ruff format .
 
 The template supports several modes controlled by `copier.yml` questions:
 
-- `is_django_package` - Adds Django-specific config (migrations, settings, tox for matrix testing)
 - `has_cli` - Adds Typer CLI boilerplate
 - `documentation` - Adds Sphinx/MyST documentation setup
 - `open_source_license` - Generates appropriate LICENSE file

@@ -11,7 +11,6 @@ Project template for a Python Package using Copier.
 - Testing with Pytest using GitHub actions.
 - Packaging powered by [uv].
 - Optionally generates a CLI entry point powered by [Typer] and [Rich].
-- Optionally makes it a Django package.
 - Uses [Ruff] for formatting and linting.
 - Comes with [prek] hook config for [Ruff].
 - Style guide enforced on CI.
@@ -104,19 +103,6 @@ Here is an overview of what it's doing:
 - Upload the sources to PyPI and attach them to the Github release, using trusted publisher.
 
 For more details, check out the [conventional commits website][conventional-commits] and [Python semantic release][python-semantic-release] GitHub action.
-
-### Optional: Django package
-
-If your package is a reusable Django app, you should answer "yes" to the question "Is the project a Django package?". This will generate a bit more boilerplate for you to make it easier to develop and test:
-
-- At the root, you'll get a `manage.py` which is going to come handy if your package contain any models and you need to run migrations for it.
-- Testing will use tox as the Django-Python support matrix can be complicated.
-- Inside your package source, you'll get a `conf.py` to include your reusable app settings, for the users of your app to configure your app. This is following the pattern explained in [this blog post](https://overtag.dk/v2/blog/a-settings-pattern-for-reusable-django-apps/).
-- The tests will come in with settings and URLs files, along with an test app with basic models.
-
-#### Migrations
-
-You should be able to use the provided `manage.py` to create migrations for your reusable app. Create or change your models and run `uv run python manage.py makemigrations`.
 
 ### Prek
 

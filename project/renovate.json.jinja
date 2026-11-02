@@ -1,7 +1,6 @@
 {
 {%- if github_username == "browniebroke" %}
-  "extends": ["github>browniebroke/renovate-configs:python"]{% if is_django_package %},
-  "ignoreDeps": ["django"]{% endif %}
+  "extends": ["github>browniebroke/renovate-configs:python"]
 {%- else  %}
   "extends": [
     "config:best-practices",
@@ -9,9 +8,6 @@
     ":automergeAll",
     ":enablePreCommit"
   ],
-{%- if is_django_package %}
-  "ignoreDeps": ["django"],
-{%- endif %}
   "packageRules": [
     {
       "matchPackageNames": ["python"],

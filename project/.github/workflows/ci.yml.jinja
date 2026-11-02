@@ -49,22 +49,11 @@ jobs:
       - uses: astral-sh/setup-uv@v8.1.0
         with:
           python-version: ${{ matrix.python-version }}{% endraw %}
-{%- if is_django_package %}{% raw %}
-      - run: uv tool install tox --with tox-uv
-        shell: bash
-      - run: tox -f py$(echo ${{ matrix.python-version }} | tr -d .)
-        shell: bash
-      - run: |
-          uv run coverage combine
-          uv run coverage xml
-        shell: bash
-{% endraw %}
-{%- else %}{% raw %}
+{% raw %}
       - run: uv sync --no-python-downloads
         shell: bash
       - run: uv run pytest
-        shell: bash{% endraw %}
-{%- endif  %}{% raw %}
+        shell: bash{% endraw %}{% raw %}
       - uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

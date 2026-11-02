@@ -16,14 +16,6 @@ authors = [
 requires-python = ">=3.10"
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
-  {%- if is_django_package %}
-  "Framework :: Django",
-  "Framework :: Django :: 4.2",
-  "Framework :: Django :: 5.0",
-  "Framework :: Django :: 5.1",
-  "Framework :: Django :: 5.2",
-  "Framework :: Django :: 6.0",
-  {%- endif  %}
   "Intended Audience :: Developers",
   "Natural Language :: English",
   "Operating System :: OS Independent",
@@ -35,15 +27,10 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Topic :: Software Development :: Libraries",
 ]
-{%- if is_django_package or has_cli  %}
+{%- if has_cli  %}
 dependencies = [
-  {%- if is_django_package  %}
-  "django>=4.2",
-  {%- endif %}
-  {%- if has_cli  %}
   "rich>=10",
   "typer>=0.15,<1",
-  {%- endif %}
 ]
 {%- endif  %}
 urls."Bug Tracker" = "https://github.com/{{ github_username }}/{{ project_slug }}/issues"
@@ -60,15 +47,9 @@ scripts.{{ cli_name }} = "{{ package_name }}.cli:app"
 dev = [
   "coverage",
   "pytest==9.*",
-{%- if is_django_package  %}
-  "pytest-django==4.*",
-{%- else  %}
   "pytest-cov==7.*",
-{%- endif %}
   "sybil[pytest]",
-{%- if not is_django_package  %}
   "ty",
-{%- endif %}
 ]
 {%- if documentation %}
 docs = [
@@ -78,25 +59,6 @@ docs = [
   "sphinx-autobuild; python_version>='3.12'",
 ]
 {%- endif %}
-{%- if is_django_package %}
-django42 = [ "django>=4.2a1,<5" ]
-django50 = [ "django>=5.0a1,<5.1" ]
-django51 = [ "django>=5.1a1,<5.2" ]
-django52 = [ "django>=5.2a1,<6" ]
-django60 = [ "django>=6.0a1,<6.1; python_version>='3.12'" ]
-
-[tool.uv]
-conflicts = [
-  [
-    { group = "django42" },
-    { group = "django50" },
-    { group = "django51" },
-    { group = "django52" },
-    { group = "django60" },
-  ],
-]
-{%- endif %}
-
 [tool.ruff]
 line-length = 88
 lint.select = [
@@ -136,35 +98,9 @@ lint.isort.known-first-party = [ "{{ package_name }}", "tests" ]
 
 [tool.pyproject-fmt]
 max_supported_python = "3.14"
-{%- if is_django_package  %}
-
-[tool.mypy]
-check_untyped_defs = true
-disallow_any_generics = true
-disallow_incomplete_defs = true
-disallow_untyped_defs = true
-mypy_path = "src/"
-no_implicit_optional = true
-show_error_codes = true
-warn_unreachable = true
-warn_unused_ignores = true
-exclude = [
-{%- if documentation %}
-  "docs/.*",
-{%- endif %}
-  "setup.py",
-]
-overrides = [
-  { module = "tests.*", allow_untyped_defs = true },
-{%- if documentation %}
-  { module = "docs.*", ignore_errors = true },
-{%- endif %}
-]
-{%- else  %}
 
 [tool.ty]
 terminal.error-on-warning = true
-{%-endif %}
 
 [tool.pytest]
 minversion = "9.0"
@@ -172,23 +108,13 @@ addopts = [
   "-v",
   "-Wonce",
   "-p no:doctest",
-{%- if not is_django_package  %}
   "--cov={{ package_name }}",
   "--cov-report=term",
   "--cov-report=xml",
-{%- endif  %}
 ]
 pythonpath = [ "src" ]
-{%- if is_django_package  %}
-DJANGO_SETTINGS_MODULE = "tests.settings"
-{%- endif  %}
-
 [tool.coverage]
 run.branch = true
-{%- if is_django_package  %}
-run.parallel = true
-run.source = [ "{{ package_name }}" ]
-{%- endif  %}
 paths.source = [
   "src",
   ".tox/**/site-packages",
