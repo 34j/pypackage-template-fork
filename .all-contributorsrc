@@ -48,7 +48,26 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "codejedi365",
+      "name": "codejedi365",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17354856?v=4",
+      "profile": "https://github.com/codejedi365",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "abe-101",
+      "name": "Abe Hanoka",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82916197?v=4",
+      "profile": "https://www.habet.dev",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "commitType": "docs"
 }

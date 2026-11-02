@@ -1,0 +1,29 @@
+```{include} ../README.md
+
+```
+
+```{toctree}
+:caption: Installation & Usage
+:maxdepth: 2
+
+installation
+{%- if is_django_package  %}
+configuration
+{%- endif  %}
+usage
+```
+
+```{toctree}
+:caption: Project Info
+:maxdepth: 2
+
+changelog
+contributing
+```
+
+```{toctree}
+:caption: API Reference
+:maxdepth: 2
+
+{{ package_name }}
+```

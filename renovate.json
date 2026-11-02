@@ -1,9 +1,21 @@
 {
   "extends": ["github>browniebroke/renovate-configs:python"],
-  "pre-commit": {
-    "fileMatch": ["^project/\\.pre-commit-config\\.yaml$"]
-  },
-  "github-actions": {
-    "fileMatch": ["^project/\\.github/workflows/[^/]+\\.ya?ml$"]
-  }
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.jinja$/"],
+      "matchStrings": [
+        "uses:\\s+(?<depName>[\\w-]+/[\\w.-]+)@(?<currentValue>[^\\s\"']+)"
+      ],
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.pre-commit-config\\.yaml\\.jinja$/"],
+      "matchStrings": [
+        "repo:\\s+https://github\\.com/(?<depName>[\\w-]+/[\\w.-]+)\\s+rev:\\s+\"?(?<currentValue>[^\\s\"]+)\"?"
+      ],
+      "datasourceTemplate": "github-tags"
+    }
+  ]
 }

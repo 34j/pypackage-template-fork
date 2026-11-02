@@ -1,36 +1,75 @@
-[tool.poetry]
-name = "pypackage-template-fork"
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [ "setuptools>=77.0.3" ]
+
+[project]
+name = "pypackage-template"
 version = "0.1.0"
 description = "A template for generating a Python package"
-authors = [
-    "Bruno Alla <alla.brunoo@gmail.com>",
-    "34j <34j.95a2p@simplelogin.com>",
-]
 license = "MIT"
+authors = [
+  { name = "Bruno Alla", email = "alla.brunoo@gmail.com" },
+]
+requires-python = ">=3.10"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+]
+dependencies = []
 
-[tool.poetry.dependencies]
-python = "^3.8"
-arrow = "^1.2.3"
-jinja2-time = "^0.2.0"
-jinja2-env = "^0.1.1"
-jinja2-shell = "^0.1.2"
-jinja2-eval = "^0.1.0"
+[dependency-groups]
+dev = [
+  "copier==9.*",
+  "pytest==9.*",
+  "pytest-mock",
+]
 
-[tool.poetry.group.dev.dependencies]
-copier = "^8.0.0"
-pytest = "^7.0"
-pytest-mock = "^3.3"
-pre-commit = "^3.1.1"
-poetry = "^1.5.0"
+[tool.ruff]
+line-length = 88
+lint.select = [
+  "B",   # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "D",   # flake8-docstrings
+  "E",   # pycodestyle
+  "F",   # pyflake
+  "I",   # isort
+  "RUF", # ruff specific
+  "S",   # flake8-bandit
+  "UP",  # pyupgrade
+  "W",   # pycodestyle
+]
+lint.ignore = [
+  "D100", # Missing docstring in public module
+  "D104", # Missing docstring in public package
+  "D107", # Missing docstring in `__init__`
+  "D203", # 1 blank line required before class docstring
+  "D212", # Multi-line docstring summary should start at the first line
+  "D401", # First line of docstring should be in imperative mood
+]
+lint.per-file-ignores."project/tests/**/*" = [
+  "D100",
+  "D101",
+  "D102",
+  "D103",
+  "D104",
+  "S101",
+]
+lint.per-file-ignores."tests/**/*" = [
+  "D100",
+  "D101",
+  "D102",
+  "D103",
+  "D104",
+  "S101",
+]
 
-[tool.isort]
-profile = "black"
-known_first_party = ["{{package_name}}", "hooks", "tests"]
+[tool.pyproject-fmt]
+max_supported_python = "3.14"
 
-[tool.pytest.ini_options]
-addopts = "-v -Wdefault"
-testpaths = "tests/"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.pytest]
+ini_options.addopts = "-v -Wdefault"
+ini_options.testpaths = "tests/"

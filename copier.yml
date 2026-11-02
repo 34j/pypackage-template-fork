@@ -1,147 +1,154 @@
 # questions
-project_name:
-  type: str
-  help: "Project Name (human readable version)"
-  default: '{{ "exec(''import sys'') or sys.argv[-1]" | eval | capitalize }}'
-
-project_short_description:
-  type: str
-  help: "A short description of the project"
-  default: "Python package for "
-
 full_name:
   type: str
   help: "What's your name?"
-  default: "{{ '' | env ('NAME')}}"
 
 email:
   type: str
   help: "Email address"
-  default: "{{ '' | env('EMAIL') }}"
+  placeholder: "first.last@example.com"
 
 github_username:
   type: str
   help: "GitHub Username"
-  default: "{{ full_name | env('GITHUB_USER') }}"
+
+is_django_package:
+  type: bool
+  help: "Is the project a Django package?"
+  default: no
+
+project_name:
+  type: str
+  help: "Project Name (human readable version){% if is_django_package %}, should start by 'Django'{% endif %}."
+  placeholder: "Python Package"
 
 project_slug:
   type: str
-  help: "Project slug (used for GitHub, PyPI, etc.)"
+  help: "Project slug (used for GitHub, PyPI, etc.){% if is_django_package %}, should start by 'django-'{% endif %}."
   default: "{{ project_name.lower().replace(' ', '-') }}"
 
 package_name:
   type: str
-  help: "The name of the main Python package (should be a valid Python identifier)"
+  help: "The name of the main Python package (should be a valid Python identifier{% if is_django_package %} and start by 'django_'{% endif %})"
   default: "{{ project_slug.replace('-', '_') }}"
+
+django_app_shorthand:
+  type: str
+  help: "The Django app shorthand, typically the package name without the 'django_' prefix."
+  default: "{{ package_name.removeprefix('django_') }}"
+  when: "{{ is_django_package }}"
+
+project_short_description:
+  type: str
+  help: "A short description of the project"
+  placeholder: "A super helpful small Python package."
 
 open_source_license:
   type: str
   help: "The open source license to use"
   choices:
-    - "MIT"
-    - "Apache Software License 2.0"
-    - "GNU General Public License v3"
-    - "CC0 1.0 Universal"
-    - "Not open source"
+    MIT: MIT
+    Apache Software License 2.0: Apache-2.0
+    GNU General Public License v3: GPL-3.0-only
+    Not open source: "Not open source"
 
 copyright_year:
   type: str
   help: "Copyright year(s)"
-  default: "{% now 'utc', '%Y' %}"
+  default: "2025"
 
 documentation:
   type: bool
   help: "Generate documentation?"
   default: yes
 
-setup_venv:
+has_cli:
   type: bool
-  help: "Setup a virtual environment?"
-  default: yes
+  help: "Does the project have a CLI?"
+  default: no
 
-venv_version:
+cli_name:
   type: str
-  help: "Python version for the virtual environment"
-  default: "3.10"
-  when: "{{ setup_venv }}"
+  help: "The name of the CLI"
+  default: "{{ project_slug }}"
+  when: "{{ has_cli }}"
 
-run_poetry_install:
+run_uv_sync:
   type: bool
-  help: "Run poetry install after {{ package_name }} generation?"
-  default: yes
-  when: "{{ setup_venv }}"
+  help: "Run uv sync install after {{ package_name }} generation?"
+  default: no
 
 initial_commit:
   type: bool
   help: "Create an initial commit with the generated {{ package_name }}?"
-  default: yes
+  default: no
 
 setup_github:
   type: bool
   help: "Setup GitHub repository (requires gh CLI)?"
-  default: yes
-  when: "{{ initial_commit }}"
-
-setup_pre_commit:
-  type: bool
-  help: "Setup pre-commit hooks (requires pre-commit)?"
-  default: yes
-  when: "{{ setup_venv }}"
-
-add_me_as_contributor:
-  type: bool
-  help: "Add me as a contributor?"
   default: no
   when: "{{ initial_commit }}"
 
-open_with_vscode:
+github_token:
+  type: str
+  secret: true
+  help: "GitHub Token with `repo` and `workflow` scopes (optional)"
+  when: "{{ setup_github }}"
+  default: ""
+
+github_app_installation_ids:
+  type: str
+  help: "Comma separated list of installation IDs of GitHub Apps you want to have installed (optional) (presumably Renovate and pre-commit.ci). The IDs could be found from the url of the 'Configure' buttons in https://github.com/settings/installations. e.g. https://github.com/organizations/<Organization-name>/settings/installations/<ID>. See https://stackoverflow.com/questions/74462420/where-can-we-find-github-apps-installation-id for further details."
+  when: "{{ setup_github }}"
+  default: ""
+
+setup_pre_commit:
   type: bool
-  help: "Open with VSCode?"
-  default: yes
+  help: "Setup pre-commit hooks (requires prek)?"
+  default: no
+
+add_me_as_contributor:
+  type: bool
+  help: "Add me as a contributor (requires npx)?"
+  default: no
+  when: "{{ initial_commit }}"
+
+open_with_editor:
+  type: bool
+  help: "Open with code editor (requires environment variable EDITOR to be set to a valid command)"
+  default: no
 
 # Copier metadata
-_min_copier_version: "8.0.0"
+_min_copier_version: "9.0.0"
 _subdirectory: "project"
 _tasks:
-  # In Windows, command prompt
-  # Remove license file if no license
-  - "{% if open_source_license == 'Not open source' %}rm LICENSE{% endif %}"
-  # Cleanup docs
-  - "{% if not documentation %}rm -rf docs .readthedocs.yml{% endif %}"
-  # Setup venv
-  - "{% if setup_venv %}{% if 'Windows' in ''|env('OS') %}py -{% else %}python{% endif %}{{ venv_version }} -m venv venv{% endif %}"
-  # Run poetry install
-  - "{% if 'Windows' in ''|env('OS') %}{% set venv_folder = 'venv\\\\scripts\\\\' %}{% else %}{% set venv_folder = 'venv/bin/' %}{% endif %}
-    {% if run_poetry_install %}{{ venv_folder }}python -m pip install -U pip setuptools wheel && {{ venv_folder }}pip install -U poetry pre-commit && {{ venv_folder }}python -m poetry install --with dev{% endif %}"
-  # git init
-  - "git init && git add ."
-  # Setup pre-commit
-  - "{% if 'Windows' in ''|env('OS') %}{% set venv_folder = 'venv\\\\scripts\\\\' %}{% else %}{% set venv_folder = 'venv/bin/' %}{% endif %}
-    {% if setup_pre_commit %}{{ venv_folder }}pre-commit autoupdate && {{ venv_folder }}pre-commit install && {{ venv_folder }}pre-commit run -a || git add .{% endif %}"
+  # Run 'uv sync' to generate/update lockfile
+  - "{% if run_uv_sync %}uv sync{% endif %}"
   # Initial commit
-  - '{% if initial_commit %}git commit -m "chore: initial commit"{% endif %}'
-  # Add me as a contributor
-  - "{% if add_me_as_contributor %}npx all-contributors-cli add {{ github_username }} code,ideas,doc{% endif %}"
+  - "{% if _copier_operation == 'copy' and initial_commit %}git init{% endif %}"
+  - "{% if _copier_operation == 'copy' and initial_commit %}git add .{% endif %}"
+  - '{% if _copier_operation == "copy" and initial_commit %}git commit -m "chore: initial commit"{% endif %}'
   # Setup GitHub
-  - '{% if setup_github %}gh repo create {{ github_username }}/{{ project_slug }} -d "{{ project_short_description }}"
-    --public --remote=origin --source=. --push
-    && gh repo edit --delete-branch-on-merge --enable-projects=false --enable-wiki=false
-    --enable-merge-commit=false --enable-squash-merge --enable-rebase-merge=false
-    && gh secret set PYPI_TOKEN -b "{{ "none"|env("PYPI_TOKEN") }}"
-    && gh secret set GH_PAT -b "{{ "none"|env("GITHUB_TOKEN") }}"
-    && gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"
-    "repos/{{ github_username }}/{{ project_slug }}/actions/permissions/workflow"
-    -f default_workflow_permissions="read" -F can_approve_pull_request_reviews=true
-    && curl -L -X PUT -H "Accept: application/vnd.github+json" -H "Authorization: Bearer {{ "none"|env("GITHUB_TOKEN") }}"
-    -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/{{ github_username }}/{{ project_slug }}/branches/main/protection
-    -d "{\"required_status_checks\":null,\"enforce_admins\":null,\"restrictions\":null,\"allow_force_pushes\":true"
-    {% endif %}'
-  # Open with vscode
-  - "{% if open_with_vscode %}code .{% endif %}"
-  # Replace true with false in .copier-answers.yml except "documentation: true" for faster copier update
-  - "sed -i '/documentation: true/!s/true/false/g' .copier-answers.yml"
-_jinja_extensions:
-  - jinja2_time.TimeExtension
-  - jinja2_eval.EvalExtension
-  - jinja2_shell.ShellExtension
-  - jinja2_env.EnvExtension
+  # create repo
+  - '{% if _copier_operation == "copy" and setup_github %}gh repo create {{ github_username }}/{{ project_slug }} -d "{{ project_short_description }}" --public --remote=origin --source=. --push{% endif %}'
+  # edit rules
+  - '{% if _copier_operation == "copy" and setup_github %}gh repo edit --delete-branch-on-merge --enable-projects=false --enable-wiki=false --enable-merge-commit=false --enable-squash-merge --enable-rebase-merge=false{% endif %}'
+  # set secrets
+  - '{% if _copier_operation == "copy" and setup_github %}gh secret set GH_PAT -b {% if github_token != "" %}{{ github_token }}{% else %}changeme{% endif %}{% endif %}'
+  - '{% if _copier_operation == "copy" and setup_github %}gh secret set CODECOV_TOKEN -b changeme{% endif %}'
+  # set workflow permissions
+  - '{% if _copier_operation == "copy" and setup_github %}gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "repos/{{ github_username }}/{{ project_slug }}/actions/permissions/workflow" -f default_workflow_permissions="read" -F can_approve_pull_request_reviews=true{% endif %}'
+  # set branch protection
+  # https://docs.github.com/ja/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
+  - '{% if _copier_operation == "copy" and setup_github %}gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/{{ github_username }}/{{ project_slug }}/branches/$(git branch --show-current)/protection -F "required_status_checks=null" -F "enforce_admins=false" -F "required_pull_request_reviews=null" -F "restrictions=null" -F "required_linear_history=false" -F "allow_force_pushes=true" -F "allow_deletions=true" -F "block_creations=false" -F "required_conversation_resolution=false" -F "lock_branch=false" -F "allow_fork_syncing=true" || true{% endif %}'
+  # install apps
+  # https://docs.github.com/ja/rest/apps/installations?apiVersion=2022-11-28#add-a-repository-to-an-app-installation
+  - '{% if _copier_operation == "copy" and setup_github and github_app_installation_ids != "" %}GITHUB_TOKEN={{ github_token }} {% for id in github_app_installation_ids.split(",") %}gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "user/installations/{{ id }}/repositories/$(gh api "repos/{{ github_username }}/{{ project_slug }}" --jq ".id")" && {% endfor %}echo "Apps installed"{% endif %}'
+  # Setup pre-commit
+  - "{% if _copier_operation == 'copy' and setup_pre_commit %}pre-commit install{% endif %}"
+  # Add me as a contributor
+  - "{% if _copier_operation == 'copy' and add_me_as_contributor %}npx --yes all-contributors-cli add {{ github_username }} code,ideas,doc{% endif %}"
+  # Setup pre-commit hooks using prek
+  - "{% if _copier_operation == 'copy' and setup_pre_commit %}prek install -f{% endif %}"
+  # Open with editor
+  - "{% if open_with_editor %}$EDITOR .{% endif %}"

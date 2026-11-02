@@ -1,62 +1,34 @@
 # Python Package Template
 
-<a href="https://github.com/browniebroke/pypackage-template/actions/workflows/ci.yml?query=branch%3Amain">
-  <img src="https://img.shields.io/github/actions/workflow/status/browniebroke/pypackage-template/ci.yml?branch=main&label=Test&logo=github&style=flat-square" alt="CI Status" >
-</a>
+[![CI Status](https://img.shields.io/github/actions/workflow/status/browniebroke/pypackage-template/ci.yml?branch=main&label=Test&logo=github&style=flat-square)](https://github.com/browniebroke/pypackage-template/actions/workflows/ci.yml?query=branch%3Amain)
+[![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
 
 Project template for a Python Package using Copier.
 
 ## Features
 
-- Project for Python 3.8+.
-- Testing with Pytest using Github actions.
-- Packaging powered by [poetry]
-- Follows the [black] style guide with [flake8] and [isort], [autoflake].
-- Comes with [pre-commit] hook config for black, isort, flake8 and [pyupgrade](https://github.com/asottile/pyupgrade).
+- Project for Python 3.10+.
+- Testing with Pytest using GitHub actions.
+- Packaging powered by [uv].
+- Optionally generates a CLI entry point powered by [Typer] and [Rich].
+- Optionally makes it a Django package.
+- Uses [Ruff] for formatting and linting.
+- Comes with [prek] hook config for [Ruff].
 - Style guide enforced on CI.
 - Dependencies kept up to date by [Renovate].
 - Follow the [all-contributors] specification.
 - Follow to [the conventional commits][conventional-commits] specification.
 - Automated releasing using [python-semantic-release][python-semantic-release].
 - Documentation configured with Sphinx and [MyST Parser][myst].
+- Follows the contributor covenant code of conduct.
 - Standardised list of GitHub labels synchronised on push to master using [the labels CLI][pylabels].
-
-## Quickstart
-
-```shell
-copier copy --trust "gh:34j/pypackage-template-fork" <path>
-```
-
-Branches/`main`/Branch protection rules
-
-- [x] Allow force pushes
-
-Actions/General/Workflow permissions
-
-- [x] Read and write permissions
-
-Secrets and variables/Actions/Repository secrets
-
-go to [Applications][gh-applications] and set up Renovate
-
-go to [codecov.io][codecov] and copy CODECOV_TOKEN and add it
-
-go to [Read the Docs][rtd-dashboard] and add the project
-
-set up [pre-commit-ci][pre-commit-ci]
-
-### Update
-
-```shell
-copier --force update
-```
 
 ## Usage
 
 Generate a new project with:
 
 ```shell
-copier copy --trust "gh:34j/pypackage-template-fork" <name>
+copier copy --trust "gh:browniebroke/pypackage-template" path-to-project
 ```
 
 This will prompt you for a few questions and create new directory with the name you used as project slug.
@@ -66,19 +38,19 @@ This will prompt you for a few questions and create new directory with the name 
 
 ### Start developing
 
-The project uses [Poetry] for dependencies management and packaging. Make sure you have it installed in your development machine. To install the development dependencies in a virtual environment, type:
+The project uses [uv] for dependencies management and packaging. Make sure you have it installed in your development machine. To install the development dependencies in a virtual environment, type:
 
 ```shell
-poetry install
+uv sync
 ```
 
-This will also generate a `poetry.lock` file, you should track this file in version control. To execute the test suite, call pytest inside Poetry's virtual environment via `poetry run`:
+This will also generate a `uv.lock` file, you should track this file in version control. To execute the test suite, call pytest inside uv's virtual environment via `uv run`:
 
 ```shell
-poetry run pytest
+uv run pytest
 ```
 
-Check out the [Poetry] documentation for more information on the available commands.
+Check out the [uv] documentation for more information on the available commands.
 
 ### GitHub Actions
 
@@ -86,10 +58,8 @@ When you first push to GitHub, it'll start a `ci` GitHub workflow that you can s
 
 - The `test` job will run your test suite with Pytest against all Python version from 3.8 to 3.11
 - A few things will run in the lint job:
-  - black in check mode
-  - isort in check mode
-  - flake8
-  - pyupgrade for Python 3.8+
+  - Ruff format
+  - Ruff lint with several flake8, isort and pyupgrade plugins.
 
 A `labels` workflow will also run and synchronise the GitHub labels based on the `.github/labels.toml` file.
 
@@ -97,17 +67,30 @@ A `labels` workflow will also run and synchronise the GitHub labels based on the
 
 The workflows need [a few secrets][gh-secrets] to be setup in your GitHub repository:
 
-- `PYPI_TOKEN` to publish releases to [PyPI][pypi]. This one should be created as `release` environment secret.
-- `GH_PAT` a [personal access token (PAT) with the `repo` scope][create-pat] for opening pull requests and updating the repository topics. This is used by the `hacktoberfest` workflow.
-- `CODECOV_TOKEN` to upload coverage data to [codecov.io][codecov] in the Test workflow (optional for public repos).
+- `GH_PAT` a [personal access token (PAT) with the `repo` scope][create-pat] for opening pull requests and updating the repository topics. This is used by the `upgrader` and `labels` workflows.
+- `CODECOV_TOKEN` to upload coverage data to [codecov.io][codecov] in the Test workflow.
 
-If you have the GitHub CLI installed and chose to set up GitHub, they will be created with a dummy value.
+If you have the GitHub CLI installed and chose to set up GitHub, they will be created with a dummy value (`changeme`).
 
 ### Automated release
 
-By following the conventional commits specification, we're able to completely automate versioning and releasing to PyPI. This is handled by the `semantic-release.yml` workflow. It is triggered manually by default, but can be configured to run on every push to your main branch.
+By following the conventional commits specification, we're able to completely automate versioning and releasing to PyPI. It runs on every push to your main branch, as part of the `release` job of the `ci.yml` workflow. You shouldn't need to create a token, but you'll need to setup [trusted publisher](https://docs.pypi.org/trusted-publishers/using-a-publisher/) for the project.
 
-Here is an overview of its features:
+#### Trusted publisher setup
+
+The first time you push, the workflow will try to create a release in PyPI, however the project doesn't exist there yet, which seems like a chicken and egg situation. Luckily, you can add a trusted publisher before creating the PyPI project here: https://pypi.org/manage/account/publishing/. Here are the infos that you should use:
+
+- PyPI project name: what you've entered as "project slug"
+- Owner: your GitHub username
+- Repository name: what you've entered as "project slug"
+- Workflow name: `ci.yml`
+- Environment name: `release`
+
+If the release phase failed the first time, you might have to remove the release and tag from GitHub, and perhaps tidy up the changelog.
+
+#### How it works
+
+Here is an overview of what it's doing:
 
 - Check the commit log since the last release, and determine the next version to be released.
 - If no significant change detected, stop here (e.g. just dependencies update).
@@ -118,13 +101,26 @@ Here is an overview of its features:
 - Push to GitHub.
 - Create a release in GitHub with the changes as release notes.
 - Build the source and binary distribution (wheel).
-- Upload the sources to PyPI and attach them to the Github release.
+- Upload the sources to PyPI and attach them to the Github release, using trusted publisher.
 
-For more details, check out the [conventional commits website][conventional-commits] and [Python semantic release][python-semantic-release] Github action.
+For more details, check out the [conventional commits website][conventional-commits] and [Python semantic release][python-semantic-release] GitHub action.
 
-### Pre-commit
+### Optional: Django package
 
-The project comes with the config for [pre-commit]. If you're not familiar with it, follow their documentation on how to install it and set it up.
+If your package is a reusable Django app, you should answer "yes" to the question "Is the project a Django package?". This will generate a bit more boilerplate for you to make it easier to develop and test:
+
+- At the root, you'll get a `manage.py` which is going to come handy if your package contain any models and you need to run migrations for it.
+- Testing will use tox as the Django-Python support matrix can be complicated.
+- Inside your package source, you'll get a `conf.py` to include your reusable app settings, for the users of your app to configure your app. This is following the pattern explained in [this blog post](https://overtag.dk/v2/blog/a-settings-pattern-for-reusable-django-apps/).
+- The tests will come in with settings and URLs files, along with an test app with basic models.
+
+#### Migrations
+
+You should be able to use the provided `manage.py` to create migrations for your reusable app. Create or change your models and run `uv run python manage.py makemigrations`.
+
+### Prek
+
+The project comes with the config for [prek]. If you're not familiar with it, follow their documentation on how to install it and set it up.
 
 ### Documentation
 
@@ -136,7 +132,7 @@ To enable it, you might need to go [into your dashboard][rtd-dashboard] and impo
 
 The project dependencies are kept up to date with [Renovate] which requires [the Github app][renovate-gh-app] to be installed.
 
-The main advantage of Renovate over Dependabot is the auto-merge option, which is configured to automatically merge minor/patch updates with all the CI checks passing. It supports a variety of package managers, including Poetry, GitHub actions and pre-commit hooks which are used by default.
+The main advantage of Renovate over Dependabot is the auto-merge option, which is configured to automatically merge minor/patch updates with all the CI checks passing. It supports a variety of package managers, including uv, GitHub actions and pre-commit hooks (used by prek) which are used by default.
 
 ### All contributors
 
@@ -158,6 +154,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://cloudreactor.io/"><img src="https://avatars.githubusercontent.com/u/1079646?v=4?s=80" width="80px;" alt="Jeff Tsay"/><br /><sub><b>Jeff Tsay</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=jtsay362" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/34j"><img src="https://avatars.githubusercontent.com/u/55338215?v=4?s=80" width="80px;" alt="34j"/><br /><sub><b>34j</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=34j" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kroimon"><img src="https://avatars.githubusercontent.com/u/628587?v=4?s=80" width="80px;" alt="Stefan Rado"/><br /><sub><b>Stefan Rado</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=kroimon" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/codejedi365"><img src="https://avatars.githubusercontent.com/u/17354856?v=4?s=80" width="80px;" alt="codejedi365"/><br /><sub><b>codejedi365</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=codejedi365" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.habet.dev"><img src="https://avatars.githubusercontent.com/u/82916197?v=4?s=80" width="80px;" alt="Abe Hanoka"/><br /><sub><b>Abe Hanoka</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/issues?q=author%3Aabe-101" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
@@ -169,12 +167,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
-[poetry]: https://python-poetry.org/
-[black]: https://github.com/psf/black
-[flake8]: https://pypi.org/project/flake8/
-[isort]: https://pypi.org/project/isort/
-[autoflake]: https://pypi.org/project/autoflake/
-[pre-commit]: https://pre-commit.com/
+[uv]: https://docs.astral.sh/uv/
+[Typer]: https://typer.tiangolo.com
+[Rich]: https://rich.readthedocs.io
+[Ruff]: https://pypi.org/project/ruff/
+[prek]: https://prek.j178.dev/
 [renovate]: https://docs.renovatebot.com/
 [renovate-gh-app]: https://github.com/apps/renovate
 [all-contributors]: https://github.com/all-contributors/all-contributors
@@ -188,5 +185,3 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [create-pat]: https://github.com/settings/tokens/new?scopes=repo
 [rtd-dashboard]: https://readthedocs.org/dashboard/
 [all-contribs-install]: https://allcontributors.org/docs/en/bot/installation
-[pre-commit-ci]: https://pre-commit.ci/
-[gh-applications]: https://github.com/settings/installations
