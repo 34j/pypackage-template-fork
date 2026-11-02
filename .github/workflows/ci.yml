@@ -69,7 +69,7 @@ jobs:
         extra_options:
           - project_name: "Simple Package"
             project_slug: "simple-package"
-            value: "--data 'add_me_as_contributor=yes'"
+            value: ""
           - project_name: "Simple CLI"
             project_slug: "simple-cli"
             value: "--data 'has_cli=yes' --data 'cli_name=mycli'"

@@ -96,12 +96,6 @@ setup_pre_commit:
   help: "Setup pre-commit hooks (requires prek)?"
   default: no
 
-add_me_as_contributor:
-  type: bool
-  help: "Add me as a contributor (requires npx)?"
-  default: no
-  when: "{{ initial_commit }}"
-
 open_with_editor:
   type: bool
   help: "Open with code editor (requires environment variable EDITOR to be set to a valid command)"
@@ -135,8 +129,6 @@ _tasks:
   - '{% if _copier_operation == "copy" and setup_github and github_app_installation_ids != "" %}GITHUB_TOKEN={{ github_token }} {% for id in github_app_installation_ids.split(",") %}gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "user/installations/{{ id }}/repositories/$(gh api "repos/{{ github_username }}/{{ project_slug }}" --jq ".id")" && {% endfor %}echo "Apps installed"{% endif %}'
   # Setup pre-commit
   - "{% if _copier_operation == 'copy' and setup_pre_commit %}pre-commit install{% endif %}"
-  # Add me as a contributor
-  - "{% if _copier_operation == 'copy' and add_me_as_contributor %}npx --yes all-contributors-cli add {{ github_username }} code,ideas,doc{% endif %}"
   # Setup pre-commit hooks using prek
   - "{% if _copier_operation == 'copy' and setup_pre_commit %}prek install -f{% endif %}"
   # Open with editor

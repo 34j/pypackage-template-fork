@@ -2,16 +2,12 @@ from __future__ import annotations
 
 import textwrap
 from collections.abc import Sequence
-from os import environ
 from pathlib import Path
 
 import copier
 import pytest
 
 PROJECT_ROOT = Path(__file__).parent.parent
-CI = environ.get("CI", "false").lower() == "true"
-
-
 @pytest.fixture
 def base_answers():
     return {
@@ -27,7 +23,6 @@ def base_answers():
         "initial_commit": True,
         "setup_github": False,
         "setup_pre_commit": False,
-        "add_me_as_contributor": False,
     }
 
 
@@ -259,27 +254,3 @@ def test_cli(
             dst_path / "pyproject.toml",
             unexpect_strs=['scripts.mycli = "snake_farm.cli:app"'],
         )
-
-
-@pytest.mark.skipif(CI, reason="GitHub API rate limit")
-def test_add_me_as_contributor(
-    tmp_path: Path,
-    base_answers: dict[str, str | bool],
-):
-    dst_path = tmp_path / "snake-farm"
-    copier.run_copy(
-        src_path=str(PROJECT_ROOT),
-        dst_path=dst_path,
-        data={**base_answers, "add_me_as_contributor": True},
-        defaults=True,
-        unsafe=True,
-    )
-    assert tmp_path.exists()
-    _check_file_contents(
-        dst_path / "README.md",
-        expected_strs=[f"commits?author={base_answers['github_username']}"],
-    )
-    _check_file_contents(
-        dst_path / ".all-contributorsrc",
-        expected_strs=[f"{base_answers['github_username']}"],
-    )

@@ -15,7 +15,6 @@ Project template for a Python Package using Copier.
 - Comes with [prek] hook config for [Ruff].
 - Style guide enforced on CI.
 - Dependencies kept up to date by [Renovate].
-- Follow the [all-contributors] specification.
 - Follow to [the conventional commits][conventional-commits] specification.
 - Automated releasing using [python-semantic-release][python-semantic-release].
 - Documentation configured with Sphinx and [MyST Parser][myst].
@@ -120,39 +119,6 @@ The project dependencies are kept up to date with [Renovate] which requires [the
 
 The main advantage of Renovate over Dependabot is the auto-merge option, which is configured to automatically merge minor/patch updates with all the CI checks passing. It supports a variety of package managers, including uv, GitHub actions and pre-commit hooks (used by prek) which are used by default.
 
-### All contributors
-
-This is a specification that help you highlight every open source contribution in your README. This is easy to maintain as it comes with a GitHub bot to do the updates for you, so more manual updates on the contributors file.
-
-If you never used it before, you will have to [install the Github app][all-contribs-install] and give it access to your repo.
-
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://browniebroke.com/"><img src="https://avatars.githubusercontent.com/u/861044?v=4?s=80" width="80px;" alt="Bruno Alla"/><br /><sub><b>Bruno Alla</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=browniebroke" title="Code">💻</a> <a href="#ideas-browniebroke" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/browniebroke/pypackage-template/commits?author=browniebroke" title="Documentation">📖</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://cloudreactor.io/"><img src="https://avatars.githubusercontent.com/u/1079646?v=4?s=80" width="80px;" alt="Jeff Tsay"/><br /><sub><b>Jeff Tsay</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=jtsay362" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/34j"><img src="https://avatars.githubusercontent.com/u/55338215?v=4?s=80" width="80px;" alt="34j"/><br /><sub><b>34j</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=34j" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kroimon"><img src="https://avatars.githubusercontent.com/u/628587?v=4?s=80" width="80px;" alt="Stefan Rado"/><br /><sub><b>Stefan Rado</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=kroimon" title="Documentation">📖</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/codejedi365"><img src="https://avatars.githubusercontent.com/u/17354856?v=4?s=80" width="80px;" alt="codejedi365"/><br /><sub><b>codejedi365</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/commits?author=codejedi365" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://www.habet.dev"><img src="https://avatars.githubusercontent.com/u/82916197?v=4?s=80" width="80px;" alt="Abe Hanoka"/><br /><sub><b>Abe Hanoka</b></sub></a><br /><a href="https://github.com/browniebroke/pypackage-template/issues?q=author%3Aabe-101" title="Bug reports">🐛</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-
 [uv]: https://docs.astral.sh/uv/
 [Typer]: https://typer.tiangolo.com
 [Rich]: https://rich.readthedocs.io
@@ -160,7 +126,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [prek]: https://prek.j178.dev/
 [renovate]: https://docs.renovatebot.com/
 [renovate-gh-app]: https://github.com/apps/renovate
-[all-contributors]: https://github.com/all-contributors/all-contributors
 [conventional-commits]: https://www.conventionalcommits.org
 [python-semantic-release]: https://github.com/relekang/python-semantic-release
 [myst]: https://myst-parser.readthedocs.io
@@ -170,4 +135,3 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [pypi]: https://pypi.org/
 [create-pat]: https://github.com/settings/tokens/new?scopes=repo
 [rtd-dashboard]: https://readthedocs.org/dashboard/
-[all-contribs-install]: https://allcontributors.org/docs/en/bot/installation
