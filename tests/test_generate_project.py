@@ -152,8 +152,11 @@ def test_documentation(
             dst_path / ".readthedocs.yml",
             expected_strs=[
                 "configuration: docs/conf.py",
-                "uv sync --frozen --no-dev --group docs",
+                "method: uv",
+                "command: sync",
+                "- docs",
             ],
+            unexpect_strs=['python: "3.13"'],
         )
         _check_file_contents(
             dst_path / "pyproject.toml",
