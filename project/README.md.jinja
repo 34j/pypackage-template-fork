@@ -48,7 +48,7 @@
 
 Install this via pip (or your favourite package manager):
 
-```
+```shell
 pip install {{ project_slug }}
 ```
 {%- if not documentation  %}
@@ -58,7 +58,7 @@ pip install {{ project_slug }}
 
 Call the command line interface:
 
-```bash
+```shell
 {{ project_slug }} --help
 ```
 {%- else  %}
@@ -72,12 +72,3 @@ Start by importing it:
 ```
 {%- endif %}
 {%- endif %}
-
-## Credits
-
-[![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
-
-This package was created with
-[Copier](https://copier.readthedocs.io/) and the
-[browniebroke/pypackage-template](https://github.com/browniebroke/pypackage-template)
-project template.
