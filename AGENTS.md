@@ -34,7 +34,7 @@ ruff format .
 - `project/` - The actual template files that get copied to generated projects
   - Files with `.jinja` extension are processed by Jinja2
   - Files/folders with `{% if condition %}` in names are conditionally included
-  - `{{package_name}}` in paths gets replaced with user input
+  - `{{module_name}}` in paths gets replaced with user input
 - `tests/` - Tests that verify template generation produces valid projects
 
 ### Key Template Options

@@ -104,11 +104,11 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder {{package_name}} settings
+# Spyder settings
 .spyderproject
 .spyproject
 
-# Rope {{package_name}} settings
+# Rope settings
 .ropeproject
 
 # mkdocs documentation

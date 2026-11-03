@@ -17,7 +17,7 @@ project_slug:
   help: "Project slug (used for GitHub, PyPI, etc.)."
   default: "{{ project_name.lower().replace(' ', '-') }}"
 
-package_name:
+module_name:
   type: str
   help: "The name of the main Python package (should be a valid Python identifier)"
   default: "{{ project_slug.replace('-', '_') }}"
@@ -53,12 +53,12 @@ has_cli:
 
 run_uv_sync:
   type: bool
-  help: "Run uv sync install after {{ package_name }} generation?"
+  help: "Run uv sync install after {{ module_name }} generation?"
   default: no
 
 initial_commit:
   type: bool
-  help: "Create an initial commit with the generated {{ package_name }}?"
+  help: "Create an initial commit with the generated {{ module_name }}?"
   default: no
 
 setup_github:

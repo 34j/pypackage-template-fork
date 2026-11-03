@@ -5,7 +5,7 @@ import sys
 def test_add_command():
     """The CLI adds two numbers."""
     result = subprocess.run(
-        [sys.executable, "-m", "{{ package_name }}", "1", "1"],
+        [sys.executable, "-m", "{{ module_name }}", "1", "1"],
         check=True,
         capture_output=True,
         text=True,

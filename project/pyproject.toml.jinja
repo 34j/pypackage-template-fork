@@ -37,7 +37,7 @@ urls.documentation = "https://{{ project_slug }}.readthedocs.io"
 {%- endif %}
 urls.repository = "https://github.com/{{ github_user }}/{{ project_slug }}"
 {%- if has_cli %}
-scripts.{{ project_slug }} = "{{ package_name }}.cli:app"
+scripts.{{ project_slug }} = "{{ module_name }}.cli:app"
 {%- endif  %}
 
 [dependency-groups]
@@ -93,7 +93,7 @@ lint.per-file-ignores."tests/**/*" = [
   "D104",
   "S101",
 ]
-lint.isort.known-first-party = [ "{{ package_name }}", "tests" ]
+lint.isort.known-first-party = [ "{{ module_name }}", "tests" ]
 
 [tool.pyproject-fmt]
 max_supported_python = "3.14"
@@ -107,7 +107,7 @@ addopts = [
   "-v",
   "-Wonce",
   "-p no:doctest",
-  "--cov={{ package_name }}",
+  "--cov={{ module_name }}",
   "--cov-report=term",
   "--cov-report=xml",
 ]
@@ -126,7 +126,7 @@ report.exclude_lines = [
 [tool.semantic_release]
 version_toml = [ "pyproject.toml:project.version" ]
 version_variables = [
-  "src/{{ package_name }}/__init__.py:__version__",
+  "src/{{ module_name }}/__init__.py:__version__",
 ]
 build_command = """
 pip install uv
