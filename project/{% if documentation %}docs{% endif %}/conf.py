@@ -10,10 +10,13 @@ with (project_root / "pyproject.toml").open("rb") as pyproject_file:
     pyproject = tomllib.load(pyproject_file)
 
 project_metadata = pyproject["project"]
-sphinx_metadata = pyproject["tool"]["sphinx"]
-
-project = sphinx_metadata["project"]
-copyright = sphinx_metadata["copyright"]
+package_path = next(path for path in (project_root / "src").iterdir() if path.is_dir())
+readme = (project_root / "README.md").read_text(encoding="utf-8")
+project = next(
+    line.removeprefix("# ").strip()
+    for line in readme.splitlines()
+    if line.startswith("# ")
+)
 author = project_metadata["authors"][0]["name"]
 release = project_metadata["version"]
 
@@ -71,7 +74,6 @@ def cleanup_documentation_sources(app: Sphinx, _: Any) -> None:
 def run_apidoc(_: Any) -> None:
     """Generate the API-reference source document."""
     docs_path = Path(__file__).parent
-    module_path = project_root / "src" / sphinx_metadata["package"]
     apidoc.main(
         [
             "--force",
@@ -79,7 +81,7 @@ def run_apidoc(_: Any) -> None:
             "--no-toc",
             "-o",
             docs_path.as_posix(),
-            module_path.as_posix(),
+            package_path.as_posix(),
         ]
     )
 

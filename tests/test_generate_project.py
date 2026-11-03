@@ -68,33 +68,7 @@ def test_defaults_values(
     )
     _check_file_contents(
         dst_path / "renovate.json",
-        expected_strs=['"config:best-practices"'],
-        unexpect_strs=['"github>browniebroke/renovate-configs:python"'],
-    )
-
-
-def test_author_customisation(
-    tmp_path: Path,
-    base_answers: dict[str, str | bool],
-):
-    answers = {
-        **base_answers,
-        "github_username": "browniebroke",
-    }
-    dst_path = tmp_path / "snake-farm"
-    worker = copier.run_copy(
-        src_path=str(PROJECT_ROOT),
-        dst_path=dst_path,
-        data=answers,
-        defaults=True,
-        unsafe=True,
-    )
-    assert worker is not None
-    assert tmp_path.exists()
-    _check_file_contents(
-        dst_path / "renovate.json",
-        expected_strs=['"github>browniebroke/renovate-configs:python"'],
-        unexpect_strs=['"config:best-practices"'],
+        expected_strs=["https://github.com/34j/renovate-config/blob/main/python.json"],
     )
 
 
@@ -184,15 +158,18 @@ def test_documentation(
         _check_file_contents(
             dst_path / "pyproject.toml",
             expected_strs=["docs = [", "sphinx==", "myst-parser"],
+            unexpect_strs=["[tool.sphinx]", 'project = "Snake Farm"', "copyright ="],
         )
         _check_file_contents(
             dst_path / "docs" / "conf.py",
             expected_strs=[
                 "pyproject = tomllib.load(pyproject_file)",
-                'project = sphinx_metadata["project"]',
+                'line.removeprefix("# ").strip()',
+                "package_path = next(",
                 'app.connect("config-inited", generate_documentation_sources)',
                 '"index.md": """```{include} ../README.md',
             ],
+            unexpect_strs=["copyright ="],
         )
         assert not (dst_path / "docs" / "changelog.md").exists()
     else:
