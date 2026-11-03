@@ -11,7 +11,7 @@ readme = "README.md"
 license = "{{ open_source_license }}"
 {%- endif %}
 authors = [
-  { name = "{{ full_name }}", email = "{{ email }}" },
+  { name = "{{ user_name }}" },
 ]
 requires-python = ">=3.12"
 classifiers = [
@@ -30,12 +30,12 @@ dependencies = [
   "cyclopts",
 ]
 {%- endif  %}
-urls."Bug Tracker" = "https://github.com/{{ github_username }}/{{ project_slug }}/issues"
-urls.Changelog = "https://github.com/{{ github_username }}/{{ project_slug }}/blob/main/CHANGELOG.md"
+urls."Bug Tracker" = "https://github.com/{{ github_user }}/{{ project_slug }}/issues"
+urls.Changelog = "https://github.com/{{ github_user }}/{{ project_slug }}/blob/main/CHANGELOG.md"
 {%- if documentation %}
 urls.documentation = "https://{{ project_slug }}.readthedocs.io"
 {%- endif %}
-urls.repository = "https://github.com/{{ github_username }}/{{ project_slug }}"
+urls.repository = "https://github.com/{{ github_user }}/{{ project_slug }}"
 {%- if has_cli %}
 scripts.{{ project_slug }} = "{{ package_name }}.cli:app"
 {%- endif  %}

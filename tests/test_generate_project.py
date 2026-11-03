@@ -12,9 +12,8 @@ PROJECT_ROOT = Path(__file__).parent.parent
 @pytest.fixture
 def base_answers():
     return {
-        "full_name": "Jeanne Deau",
-        "email": "action@github.com",
-        "github_username": "actions-user",
+        "user_name": "Jeanne Deau",
+        "github_user": "actions-user",
         "project_name": "Snake Farm",
         "project_short_description": "A sample Snake farming project.",
         "version": "0.0.1",
@@ -160,7 +159,7 @@ def test_documentation(
         )
         _check_file_contents(
             dst_path / "pyproject.toml",
-            expected_strs=["docs = [", "sphinx==", "myst-parser", "sphinx-math-dollar"],
+            expected_strs=["docs = [", "sphinx", "myst-parser", "sphinx-math-dollar"],
             unexpect_strs=["[tool.sphinx]", 'project = "Snake Farm"', "copyright ="],
         )
         _check_file_contents(
