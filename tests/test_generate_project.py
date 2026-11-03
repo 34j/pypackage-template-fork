@@ -195,7 +195,6 @@ def test_documentation(
             ],
         )
         assert not (dst_path / "docs" / "changelog.md").exists()
-        assert not (dst_path / "docs" / "contributing.md").exists()
     else:
         assert not (dst_path / "docs").exists()
         assert not (dst_path / ".readthedocs.yml").exists()

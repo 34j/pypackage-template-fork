@@ -55,7 +55,6 @@ def generate_documentation_sources(app: Sphinx, _: Any) -> None:
 ```
 """,
         "changelog.md": "```{include} ../CHANGELOG.md\n```\n",
-        "contributing.md": "```{include} ../CONTRIBUTING.md\n```\n",
     }
     for name, content in sources.items():
         (Path(app.srcdir) / name).write_text(content, encoding="utf-8")
@@ -63,7 +62,7 @@ def generate_documentation_sources(app: Sphinx, _: Any) -> None:
 
 def cleanup_documentation_sources(app: Sphinx, _: Any) -> None:
     """Remove temporary Sphinx source pages."""
-    for page in ("index.md", "changelog.md", "contributing.md"):
+    for page in ("index.md", "changelog.md"):
         path = Path(app.srcdir) / page
         if path.exists():
             path.unlink()
