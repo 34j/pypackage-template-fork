@@ -43,8 +43,8 @@ scripts.{{ project_slug }} = "{{ package_name }}.cli:app"
 [dependency-groups]
 dev = [
   "coverage",
-  "pytest==9.*",
-  "pytest-cov==7.*",
+  "pytest",
+  "pytest-cov",
   "sybil[pytest]",
   "ty",
 ]
@@ -52,7 +52,7 @@ dev = [
 docs = [
   "furo",
   "myst-parser",
-  "sphinx==8.*",
+  "sphinx",
   "sphinx-autobuild",
   "sphinx-math-dollar",
 ]
