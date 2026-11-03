@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import textwrap
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -8,6 +7,8 @@ import copier
 import pytest
 
 PROJECT_ROOT = Path(__file__).parent.parent
+
+
 @pytest.fixture
 def base_answers():
     return {
@@ -172,10 +173,7 @@ def test_documentation(
 
     assert tmp_path.exists()
     if generate_doc:
-        _check_file_contents(
-            dst_path / "docs" / "index.md",
-            expected_strs=["{include} ../README.md"],
-        )
+        assert not (dst_path / "docs" / "index.md").exists()
         _check_file_contents(
             dst_path / ".readthedocs.yml",
             expected_strs=[
@@ -190,18 +188,14 @@ def test_documentation(
         _check_file_contents(
             dst_path / "docs" / "conf.py",
             expected_strs=[
-                textwrap.dedent(
-                    """
-                    from pathlib import Path
-                    from typing import Any
-
-                    from sphinx.application import Sphinx
-                    from sphinx.ext import apidoc
-
-                    # -- Project information"""
-                )
+                "pyproject = tomllib.load(pyproject_file)",
+                'project = sphinx_metadata["project"]',
+                'app.connect("config-inited", generate_documentation_sources)',
+                '"index.md": """```{include} ../README.md',
             ],
         )
+        assert not (dst_path / "docs" / "changelog.md").exists()
+        assert not (dst_path / "docs" / "contributing.md").exists()
     else:
         assert not (dst_path / "docs").exists()
         assert not (dst_path / ".readthedocs.yml").exists()
