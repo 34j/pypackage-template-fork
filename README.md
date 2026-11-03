@@ -54,21 +54,12 @@ Check out the [uv] documentation for more information on the available commands.
 
 When you first push to GitHub, it'll start a `ci` GitHub workflow that you can see in the "Actions" tab of your repository. This workflow runs a couple of jobs:
 
-- The `test` job will run your test suite with Pytest against all Python version from 3.8 to 3.11
+- The `test` job derives its Python-version matrix from the version-specific classifiers in `pyproject.toml`.
 - A few things will run in the lint job:
   - Ruff format
   - Ruff lint with several flake8, isort and pyupgrade plugins.
 
-A `labels` workflow will also run and synchronise the GitHub labels based on the `.github/labels.toml` file.
-
-### Secrets
-
-The workflows need [a few secrets][gh-secrets] to be setup in your GitHub repository:
-
-- `GH_PAT` a [personal access token (PAT) with the `repo` scope][create-pat] for opening pull requests and updating the repository topics. This is used by the `upgrader` and `labels` workflows.
-- `CODECOV_TOKEN` to upload coverage data to [codecov.io][codecov] in the Test workflow.
-
-If you have the GitHub CLI installed and chose to set up GitHub, they will be created with a dummy value (`changeme`).
+A `labels` workflow will also run and synchronise the GitHub labels from the shared configuration.
 
 ### Automated release
 
@@ -130,8 +121,5 @@ The main advantage of Renovate over Dependabot is the auto-merge option, which i
 [python-semantic-release]: https://github.com/relekang/python-semantic-release
 [myst]: https://myst-parser.readthedocs.io
 [pylabels]: https://github.com/hackebrot/labels
-[gh-secrets]: https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
-[codecov]: https://codecov.io/
 [pypi]: https://pypi.org/
-[create-pat]: https://github.com/settings/tokens/new?scopes=repo
 [rtd-dashboard]: https://readthedocs.org/dashboard/
