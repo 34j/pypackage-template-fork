@@ -11,7 +11,94 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
-    uses: 34j/.github/.github/workflows/pypackage-template-ci.yml@main
-    permissions:
-      contents: read
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: astral-sh/setup-uv@v8.1.0
+      - uses: j178/prek-action@v2.0.3
+        with:
+          extra-args: "--all-files --skip project/"
+
+  # Tests for the template
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.12"
+          - "3.13"
+          - "3.14"
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macOS-latest
+    runs-on: ${{ matrix.os }}
+    name: "Template: ${{ matrix.python-version }} - ${{ matrix.os }}"
+    steps:
+      - uses: actions/checkout@v6
+      - run: git config --global user.name actions-user
+      - run: git config --global user.email action@github.com
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
+      - uses: astral-sh/setup-uv@v8.1.0
+      - run: uv sync --no-python-downloads
+        shell: bash
+      - run: uv run pytest
+        shell: bash
+
+  # Generate package, run test, run linting and build docs
+  copier:
+    strategy:
+      fail-fast: false
+      matrix:
+        script:
+          - run: "uv run python -m pytest"
+            dir: ""
+            name: "pytest"
+          - run: "git init && git add . && uvx prek run -a --show-diff-on-failure --color=always"
+            dir: ""
+            name: "prek"
+          - run: "uv run sphinx-build -M html . _build -W"
+            dir: "docs"
+            name: "docs"
+        extra_options:
+          - project_name: "Simple Package"
+            project_slug: "simple-package"
+            value: ""
+          - project_name: "Simple CLI"
+            project_slug: "simple-cli"
+            value: "--data 'has_cli=yes'"
+    runs-on: ubuntu-latest
+    name: "Generated: ${{ matrix.script.name }} ${{ matrix.extra_options.project_name }}"
+    steps:
+      - uses: actions/checkout@v6
+      - run: git config --global user.name actions-user
+      - run: git config --global user.email action@github.com
+      - uses: actions/setup-python@v6
+        id: setup-python
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v8.1.0
+      - run: |
+          uvx copier copy \
+          . \
+          my-project \
+          --UNSAFE \
+          --data 'user_name=Bruno Alla' \
+          --data 'github_user=actions-user' \
+          --data 'project_name=${{ matrix.extra_options.project_name }}' \
+          --data 'project_slug=${{ matrix.extra_options.project_slug }}' \
+          --data 'project_short_description=Just a great project' \
+          --data 'open_source_license=MIT' \
+          ${{ matrix.extra_options.value }} \
+          --data 'initial_commit=yes' \
+          --defaults
+      - run: cat pyproject.toml
+        working-directory: my-project
+      - run: uv sync --group docs
+        working-directory: my-project
+      - run: ${{ matrix.script.run }}
+        working-directory: my-project/${{ matrix.script.dir }}
