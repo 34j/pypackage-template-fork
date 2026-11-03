@@ -1,12 +1,13 @@
-from typer.testing import CliRunner
-
-from {{ package_name }}.cli import app
-
-runner = CliRunner()
+import subprocess
+import sys
 
 
-def test_help():
-    """The help message includes the CLI name."""
-    result = runner.invoke(app, ["--help"])
-    assert result.exit_code == 0
-    assert "Add the arguments and print the result" in result.stdout
+def test_add_command():
+    """The CLI adds two numbers."""
+    result = subprocess.run(
+        [sys.executable, "-m", "{{ package_name }}", "1", "1"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert result.stdout.strip() == "2"

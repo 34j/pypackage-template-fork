@@ -41,7 +41,7 @@ ruff format .
 
 The template supports several modes controlled by `copier.yml` questions:
 
-- `has_cli` - Adds Typer CLI boilerplate
+- `has_cli` - Adds Cyclopts CLI boilerplate
 - `documentation` - Adds Sphinx/MyST documentation setup
 - `open_source_license` - Generates appropriate LICENSE file
 

@@ -1,7 +1,7 @@
+import tomllib
 from pathlib import Path
 from typing import Any
 
-import tomllib
 from sphinx.application import Sphinx
 from sphinx.ext import apidoc
 

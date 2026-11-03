@@ -9,11 +9,11 @@
     <img src="https://img.shields.io/readthedocs/{{ project_slug }}.svg?logo=read-the-docs&logoColor=fff&style=flat-square" alt="Documentation Status">
   </a>
   {%- endif %}
+</p>
+<p align="center">
   <a href="https://codecov.io/gh/{{ github_username }}/{{ project_slug }}">
     <img src="https://img.shields.io/codecov/c/github/{{ github_username }}/{{ project_slug }}.svg?logo=codecov&logoColor=fff&style=flat-square" alt="Test coverage percentage">
   </a>
-</p>
-<p align="center">
   <a href="https://github.com/astral-sh/uv">
     <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json" alt="uv">
   </a>
@@ -57,15 +57,15 @@ Install this via pip (or your favourite package manager):
 Call the command line interface:
 
 ```bash
-{{ cli_name }} --help
+{{ project_slug }} --help
 ```
 {%- else  %}
 
 Start by importing it:
 
 ```python
->>> import {{ package_name }}.main
->>> {{ package_name }}.main.add(1, 1)
+>>> import {{ package_name }}._main
+>>> {{ package_name }}._main.add(1, 1)
 2
 ```
 {%- endif %}

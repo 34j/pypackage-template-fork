@@ -56,12 +56,6 @@ has_cli:
   help: "Does the project have a CLI?"
   default: no
 
-cli_name:
-  type: str
-  help: "The name of the CLI"
-  default: "{{ project_slug }}"
-  when: "{{ has_cli }}"
-
 run_uv_sync:
   type: bool
   help: "Run uv sync install after {{ package_name }} generation?"

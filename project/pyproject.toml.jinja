@@ -13,15 +13,13 @@ license = "{{ open_source_license }}"
 authors = [
   { name = "{{ full_name }}", email = "{{ email }}" },
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Intended Audience :: Developers",
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
@@ -29,8 +27,7 @@ classifiers = [
 ]
 {%- if has_cli  %}
 dependencies = [
-  "rich>=10",
-  "typer>=0.15,<1",
+  "cyclopts>=3,<4",
 ]
 {%- endif  %}
 urls."Bug Tracker" = "https://github.com/{{ github_username }}/{{ project_slug }}/issues"
@@ -40,7 +37,7 @@ urls.documentation = "https://{{ project_slug }}.readthedocs.io"
 {%- endif %}
 urls.repository = "https://github.com/{{ github_username }}/{{ project_slug }}"
 {%- if has_cli %}
-scripts.{{ cli_name }} = "{{ package_name }}.cli:app"
+scripts.{{ project_slug }} = "{{ package_name }}.cli:app"
 {%- endif  %}
 
 [dependency-groups]
@@ -53,10 +50,10 @@ dev = [
 ]
 {%- if documentation %}
 docs = [
-  "furo; python_version>='3.12'",
-  "myst-parser; python_version>='3.12'",
-  "sphinx==9.*; python_version>='3.12'",
-  "sphinx-autobuild; python_version>='3.12'",
+  "furo",
+  "myst-parser",
+  "sphinx==8.*",
+  "sphinx-autobuild",
 ]
 {%- endif %}
 {%- if documentation %}

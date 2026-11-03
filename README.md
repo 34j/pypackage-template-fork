@@ -7,10 +7,10 @@ Project template for a Python Package using Copier.
 
 ## Features
 
-- Project for Python 3.10+.
+- Project for Python 3.12+.
 - Testing with Pytest using GitHub actions.
 - Packaging powered by [uv].
-- Optionally generates a CLI entry point powered by [Typer] and [Rich].
+- Optionally generates a CLI entry point powered by [Cyclopts].
 - Uses [Ruff] for formatting and linting.
 - Comes with [prek] hook config for [Ruff].
 - Style guide enforced on CI.
@@ -111,8 +111,7 @@ The project dependencies are kept up to date with [Renovate] which requires [the
 The main advantage of Renovate over Dependabot is the auto-merge option, which is configured to automatically merge minor/patch updates with all the CI checks passing. It supports a variety of package managers, including uv, GitHub actions and pre-commit hooks (used by prek) which are used by default.
 
 [uv]: https://docs.astral.sh/uv/
-[Typer]: https://typer.tiangolo.com
-[Rich]: https://rich.readthedocs.io
+[Cyclopts]: https://cyclopts.readthedocs.io/
 [Ruff]: https://pypi.org/project/ruff/
 [prek]: https://prek.j178.dev/
 [renovate]: https://docs.renovatebot.com/
