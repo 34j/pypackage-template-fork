@@ -160,7 +160,7 @@ def test_documentation(
         )
         _check_file_contents(
             dst_path / "pyproject.toml",
-            expected_strs=["docs = [", "sphinx==", "myst-parser"],
+            expected_strs=["docs = [", "sphinx==", "myst-parser", "sphinx-math-dollar"],
             unexpect_strs=["[tool.sphinx]", 'project = "Snake Farm"', "copyright ="],
         )
         _check_file_contents(

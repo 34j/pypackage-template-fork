@@ -22,24 +22,23 @@ release = project_metadata["version"]
 
 extensions = [
     "myst_parser",
+    "sphinx_math_dollar",
+    "sphinx.ext.duration",
     "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
+    "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
 ]
-napoleon_google_docstring = False
+myst_enable_extensions = [
+    "amsmath",
+    "dollarmath",
+]
 source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
 }
-templates_path = [
-    "_templates",
-]
-exclude_patterns = [
-    "_build",
-    "Thumbs.db",
-    ".DS_Store",
-]
 html_theme = "furo"
+exclude_patterns = ["_build"]
 
 
 def generate_documentation_sources(app: Sphinx, _: Any) -> None:
