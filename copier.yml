@@ -27,6 +27,11 @@ project_short_description:
   help: "A short description of the project"
   placeholder: "A super helpful small Python package."
 
+version:
+  type: str
+  help: "Initial package version"
+  default: "0.0.0"
+
 open_source_license:
   type: str
   help: "The open source license to use"
@@ -102,7 +107,7 @@ _tasks:
   - '{% if _copier_operation == "copy" and initial_commit %}git commit -m "chore: initial commit"{% endif %}'
   # Setup GitHub
   # create repo
-  - '{% if _copier_operation == "copy" and setup_github %}gh repo create {{ github_user }}/{{ project_slug }} -d "{{ project_short_description }}" --public --remote=origin --source=. --push{% endif %}'
+  - '{% if _copier_operation == "copy" and setup_github %}if ! gh repo view {{ github_user }}/{{ project_slug }} >/dev/null 2>&1; then gh repo create {{ github_user }}/{{ project_slug }} -d "{{ project_short_description }}" --public --remote=origin --source=. --push; fi{% endif %}'
   # edit rules
   - '{% if _copier_operation == "copy" and setup_github %}gh repo edit --delete-branch-on-merge --enable-projects=false --enable-wiki=false --enable-merge-commit=false --enable-squash-merge --enable-rebase-merge=false{% endif %}'
   # set workflow permissions
