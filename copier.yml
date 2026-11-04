@@ -39,6 +39,7 @@ open_source_license:
     MIT: MIT
     Apache Software License 2.0: Apache-2.0
     GNU General Public License v3: GPL-3.0-only
+    CC0 1.0 Universal: CC0-1.0
     Not open source: "Not open source"
 
 copyright_year:
