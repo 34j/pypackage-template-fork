@@ -16,6 +16,7 @@ jobs:
     permissions:
       attestations: write
       contents: write
+      id-token: write
   publish:
     if: needs.ci.outputs.released == 'true'
     needs: ci
