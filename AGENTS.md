@@ -57,4 +57,4 @@ Tests use `copier.run_copy()` to generate projects in temp directories, then ver
 
 - Follow [conventional commits](https://www.conventionalcommits.org) for commit messages
 - Ruff handles all Python linting and formatting
-- Template uses Sybil for doctest support in generated projects (configured in `project/conftest.py`)
+- Template uses Sybil for doctest support in generated projects via the `packaging-34j` pytest plugin

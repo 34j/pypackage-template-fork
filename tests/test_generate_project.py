@@ -32,7 +32,7 @@ def _check_file_contents(
     unexpect_strs: Sequence[str] = (),
 ):
     assert file_path.exists()
-    file_content = file_path.read_text()
+    file_content = file_path.read_text(encoding="utf-8")
     for content in expected_strs:
         assert content in file_content
     for content in unexpect_strs:
@@ -53,6 +53,7 @@ def test_defaults_values(
     )
     assert worker is not None
     assert tmp_path.exists()
+    assert not (dst_path / "conftest.py").exists()
     _check_file_contents(
         dst_path / "README.md",
         ["# Snake Farm"],
@@ -72,7 +73,7 @@ def test_defaults_values(
 
 
 @pytest.mark.parametrize(
-    ("license", "expect_exists", "expected_strs", "unexpected_strs"),
+    ("license_name", "expect_exists", "expected_strs", "unexpected_strs"),
     [
         (
             "MIT",
@@ -103,7 +104,7 @@ def test_defaults_values(
 def test_licenses(
     tmp_path: Path,
     base_answers: dict[str, str | bool],
-    license: str,
+    license_name: str,
     expect_exists: bool,
     expected_strs: list[str],
     unexpected_strs: list[str],
@@ -112,7 +113,7 @@ def test_licenses(
     copier.run_copy(
         src_path=str(PROJECT_ROOT),
         dst_path=dst_path,
-        data={**base_answers, "open_source_license": license},
+        data={**base_answers, "open_source_license": license_name},
         defaults=True,
         unsafe=True,
     )
@@ -159,19 +160,12 @@ def test_documentation(
         )
         _check_file_contents(
             dst_path / "pyproject.toml",
-            expected_strs=["docs = [", "sphinx", "myst-parser", "sphinx-math-dollar"],
+            expected_strs=["docs = [", "packaging-34j[docs]"],
             unexpect_strs=["[tool.sphinx]", 'project = "Snake Farm"', "copyright ="],
         )
         _check_file_contents(
             dst_path / "docs" / "conf.py",
-            expected_strs=[
-                "pyproject = tomllib.load(pyproject_file)",
-                'line.removeprefix("# ").strip()',
-                "package_path = next(",
-                'app.connect("config-inited", generate_documentation_sources)',
-                '"index.md": """```{include} ../README.md',
-            ],
-            unexpect_strs=["copyright ="],
+            expected_strs=["from packaging_34j.conf import *"],
         )
         assert not (dst_path / "docs" / "changelog.md").exists()
     else:
