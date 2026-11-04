@@ -113,7 +113,8 @@ _tasks:
   # install apps
   # https://docs.github.com/ja/rest/apps/installations?apiVersion=2022-11-28#add-a-repository-to-an-app-installation
   - '{% if _copier_operation == "copy" and setup_github and github_app_installation_ids != "" %}GITHUB_TOKEN={{ github_token }} {% for id in github_app_installation_ids.split(",") %}gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "user/installations/{{ id }}/repositories/$(gh api "repos/{{ github_user }}/{{ project_slug }}" --jq ".id")" && {% endfor %}echo "Apps installed"{% endif %}'
-  # Setup pre-commit hooks using prek
+  # Update and install pre-commit hooks using prek
+  - "{% if _copier_operation == 'copy' and setup_pre_commit %}prek autoupdate{% endif %}"
   - "{% if _copier_operation == 'copy' and setup_pre_commit %}prek install -f{% endif %}"
   # Open with editor
   - "{% if open_with_editor %}$EDITOR .{% endif %}"
