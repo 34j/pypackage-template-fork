@@ -68,7 +68,7 @@ def test_defaults_values(
     )
     _check_file_contents(
         dst_path / "renovate.json",
-        expected_strs=["https://github.com/34j/renovate-config/blob/main/python.json"],
+        expected_strs=["github>34j/renovate-config:python"],
     )
 
 
