@@ -1,6 +1,6 @@
 # Python Package Template
 
-[![CI Status](https://img.shields.io/github/actions/workflow/status/browniebroke/pypackage-template/ci.yml?branch=main&label=Test&logo=github&style=flat-square)](https://github.com/browniebroke/pypackage-template/actions/workflows/ci.yml?query=branch%3Amain)
+[![CI Status](https://img.shields.io/github/actions/workflow/status/34j/pypackage-template-fork/ci.yml?branch=main&label=Test&logo=github&style=flat-square)](https://github.com/34j/pypackage-template-fork/actions/workflows/ci.yml?query=branch%3Amain)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
 
 Project template for a Python Package using Copier.
@@ -26,7 +26,7 @@ Project template for a Python Package using Copier.
 Generate a new project with:
 
 ```shell
-copier copy --trust "gh:browniebroke/pypackage-template" path-to-project
+copier copy --trust "gh:34j/pypackage-template-fork" path-to-project
 ```
 
 This will prompt you for a few questions and create new directory with the name you used as project slug.
