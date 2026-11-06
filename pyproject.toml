@@ -33,5 +33,5 @@ lint.extend-per-file-ignores."project/**/*.py" = [ "INP001", "N999" ]
 max_supported_python = "3.14"
 
 [tool.pytest]
-ini_options.addopts = "-v -Wdefault"
 ini_options.testpaths = "tests/"
+ini_options.addopts = "-v -Wdefault"
